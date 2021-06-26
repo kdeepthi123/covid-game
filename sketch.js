@@ -28,8 +28,23 @@ function preload(){
 }
 
 function setup() {
-  createCanvas(displayWidth,displayHeight);
-  createSprite(400, 200, 50, 50);
+  createCanvas(windowWidth,windowHeight);
+  
+  bgSprite=createSprite(windowWidth/2,windowHeight/2)
+  bgSprite.addAnimation("bg",bg);
+  bgSprite.scale = 1.7;
+  bgSprite.frameDelay = 10;
+
+  ground=createSprite(windowWidth/2,windowHeight-50,windowWidth,20)
+  ground.visible=false
+
+  warrior=createSprite(50,windowHeight-50);
+  warrior.addAnimation('run',runningAnimation);
+  warrior.scale=2;
+
+  helicoperSprite=createSprite(windowWidth/2,100);
+  helicoperSprite.addAnimation('heli',helicoper)
+  helicoperSprite.scale=2;
 }
 
 function draw() {
