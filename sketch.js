@@ -1,3 +1,10 @@
+const Engine = Matter.Engine;
+const World = Matter.World;
+const Bodies = Matter.Bodies;
+const Body = Matter.Body;
+const Render = Matter.Render;
+const Constraint = Matter.Constraint;
+
 function preload(){
   bg=loadAnimation('bg/bg1.gif','bg/bg2.gif','bg/bg3.gif','bg/bg3.gif','bg/bg4.gif','bg/bg6.gif','bg/bg7.gif')
   virus=loadAnimation("virus/v1.gif","virus/v3.gif","virus/v4.gif","virus/v5.gif","virus/v6.gif","virus/v7.gif","virus/v8.gif","virus/v9.gif")
@@ -30,6 +37,10 @@ function preload(){
 function setup() {
   createCanvas(windowWidth,windowHeight);
   
+  engine = Engine.create();
+	world = engine.world; 
+
+  
   bgSprite=createSprite(windowWidth/2,windowHeight/2)
   bgSprite.addAnimation("bg",bg);
   bgSprite.scale = 1.7;
@@ -37,17 +48,52 @@ function setup() {
 
   ground=createSprite(windowWidth/2,windowHeight-50,windowWidth,20)
   ground.visible=false
+  ground = new Ground(windowWidth/2,windowHeight-50,windowWidth,20)
+  
+  warrior = new Player(50,windowHeight-50,50,50)
 
-  warrior=createSprite(50,windowHeight-50);
-  warrior.addAnimation('run',runningAnimation);
-  warrior.scale=2;
-
-  helicoperSprite=createSprite(windowWidth/2,100);
+  warrior1=createSprite(50,windowHeight-50,50,50);
+  warrior1.addAnimation('run',runningAnimation);
+  warrior1.scale=2;
+  
+  heli = new Heli(windowWidth/2,100,100,100)
+  
+  helicoperSprite=createSprite(windowWidth/2,100,100,100);
   helicoperSprite.addAnimation('heli',helicoper)
   helicoperSprite.scale=2;
+
+  var options={
+    bodyA:heli.body,
+    bodyB:warrior.body,
+    length:10,
+    stiffness:0.4
+  }
+  //console.log(options);
+  rope=Constraint.create(options)
+  World.add(world,rope)
+  console.log(rope)
 }
 
 function draw() {
   background(255,255,255);  
+  Engine.update(engine)
+  warrior1.x=warrior.body.position.x
+  warrior1.y=warrior.body.position.y
+  helicoperSprite.x=heli.body.position.x
+  helicoperSprite.y=heli.body.position.y
+  warrior.display()
+  heli.display()
+  ground.display()
   drawSprites();
+}
+
+function keyPressed(){
+if(keyCode== 69){
+   rope.bodyB=null
+}
+if(keyCode== 68){
+  rope.bodyB=warrior.body
+}
+
+
 }
