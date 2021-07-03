@@ -7,7 +7,7 @@ const Constraint = Matter.Constraint;
 
 function preload(){
   bg=loadAnimation('bg/bg1.gif','bg/bg2.gif','bg/bg3.gif','bg/bg3.gif','bg/bg4.gif','bg/bg6.gif','bg/bg7.gif')
-  virus=loadAnimation("virus/v1.gif","virus/v3.gif","virus/v4.gif","virus/v5.gif","virus/v6.gif","virus/v7.gif","virus/v8.gif","virus/v9.gif")
+  virus1=loadAnimation("virus/v1.gif","virus/v3.gif","virus/v4.gif","virus/v5.gif","virus/v6.gif","virus/v7.gif","virus/v8.gif","virus/v9.gif")
   helicoper=loadAnimation("helicopter/h1.gif","helicopter/h2.gif","helicopter/h3.gif","helicopter/h4.gif","helicopter/h5.gif","helicopter/h6.gif","helicopter/h7.gif","helicopter/h8.gif")
   jumpingAnimation = loadAnimation(
     'https://la-wit.github.io/build-an-infinite-runner/build/images/sprites/adventureMan/jump00.png', 
@@ -39,7 +39,7 @@ function setup() {
   
   engine = Engine.create();
 	world = engine.world; 
-  spawnVirus();
+  virusGroup = new Group();
   
   bgSprite=createSprite(windowWidth/2,windowHeight/2)
   bgSprite.addAnimation("bg",bg);
@@ -77,6 +77,7 @@ function setup() {
 function draw() {
   background(255,255,255);  
   Engine.update(engine)
+  spawnVirus();
   warrior1.x=warrior.body.position.x
   warrior1.y=warrior.body.position.y
   helicoperSprite.x=heli.body.position.x
@@ -98,16 +99,16 @@ if(keyCode== 68){
 
 }
 function spawnVirus() {
-  //write code here to spawn the clouds
+ rand = Math.round(random(1,5))
   if (frameCount % 60 === 0) {
-    var virus = createSprite(600,120,40,10);
-    virus.y = Math.round(random(80,120));
-    virus.addImage();
-    virus.scale = 0.5;
+    var virus = createSprite(displayWidth,120,40,10);
+    virus.y = Math.round(random(400,600));
+    virus.addAnimation('virus1',virus1);
+    virus.scale = 0.3;
     virus.velocityX = -3;
     virus.lifetime = 200;
-    virus.depth = trex.depth;
-    player.depth = trex.depth + 1;
+    virus.depth = warrior1.depth;
+    warrior.depth = warrior1.depth + 1;
     virusGroup.add(virus);
   }
 }
