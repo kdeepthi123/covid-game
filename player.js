@@ -3,7 +3,7 @@ class Player{
 	{
 		var options={
 			isStatic:false,
-            restitution:1,
+            restitution:0.1,
 			friction:0,
 			density:0.8			
 			}
