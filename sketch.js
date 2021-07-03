@@ -39,7 +39,7 @@ function setup() {
   
   engine = Engine.create();
 	world = engine.world; 
-
+  spawnVirus();
   
   bgSprite=createSprite(windowWidth/2,windowHeight/2)
   bgSprite.addAnimation("bg",bg);
@@ -96,4 +96,18 @@ if(keyCode== 68){
 }
 
 
+}
+function spawnVirus() {
+  //write code here to spawn the clouds
+  if (frameCount % 60 === 0) {
+    var virus = createSprite(600,120,40,10);
+    virus.y = Math.round(random(80,120));
+    virus.addImage();
+    virus.scale = 0.5;
+    virus.velocityX = -3;
+    virus.lifetime = 200;
+    virus.depth = trex.depth;
+    player.depth = trex.depth + 1;
+    virusGroup.add(virus);
+  }
 }
