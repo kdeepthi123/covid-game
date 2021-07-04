@@ -79,11 +79,11 @@ function draw() {
   background(255,255,255);  
   Engine.update(engine)
   spawnVirus();
-  if(keyDown('space')){
-    warrior1.velocityY=-5;
-    warrior.body.velocity.y=-5
-    console.log(warrior)
-  }
+  //if(keyDown('space')){
+    //warrior1.velocityY=-5;
+    //warrior.body.velocity.y=-5
+    //console.log(warrior)
+  //}
   if(injectionGroup.isTouching(virusGroup)){
     virusGroup.destroyEach();
     injectionGroup.destroyEach();
@@ -107,6 +107,18 @@ function keyPressed(){
 if(keyCode==39){
   warrior1.x += 2;
   warrior.body.position.x += 2;
+}
+if(keyCode==38){
+  warrior1.y += -2;
+  warrior.body.position.y += -2;
+}
+if(keyCode==37){
+  warrior1.x += -2;
+  warrior.body.position.x += -2;
+}
+if(keyCode==40){
+  warrior1.y += 2;
+  warrior.body.position.y += 2;
 }
 if(keyCode== 69){
    rope.bodyB=null
