@@ -4,9 +4,11 @@ const Bodies = Matter.Bodies;
 const Body = Matter.Body;
 const Render = Matter.Render;
 const Constraint = Matter.Constraint;
+var gameState = 1;
 
 function preload(){
   injecttionImg=loadImage("injection.png")
+  house=loadImage('house.png')
   bg=loadAnimation('bg/bg1.gif','bg/bg2.gif','bg/bg3.gif','bg/bg3.gif','bg/bg4.gif','bg/bg6.gif','bg/bg7.gif')
   virus1=loadAnimation("virus/v1.gif","virus/v3.gif","virus/v4.gif","virus/v5.gif","virus/v6.gif","virus/v7.gif","virus/v8.gif","virus/v9.gif")
   helicoper=loadAnimation("helicopter/h1.gif","helicopter/h2.gif","helicopter/h3.gif","helicopter/h4.gif","helicopter/h5.gif","helicopter/h6.gif","helicopter/h7.gif","helicopter/h8.gif")
@@ -33,6 +35,7 @@ function preload(){
     'https://la-wit.github.io/build-an-infinite-runner/build/images/sprites/adventureMan/run08.png',     
     'https://la-wit.github.io/build-an-infinite-runner/build/images/sprites/adventureMan/run09.png'    
   );
+  
 }
 
 function setup() {
@@ -63,6 +66,8 @@ function setup() {
   helicoperSprite.addAnimation('heli',helicoper)
   helicoperSprite.scale=2;
 
+  location = createSprite(random(200,displayWidth-200),displayHeight-200,100,100)
+  location.addImage(house)
   var options={
     bodyA:heli.body,
     bodyB:warrior.body,
@@ -78,45 +83,65 @@ function setup() {
 function draw() {
   background(255,255,255);  
   Engine.update(engine)
-  spawnVirus();
-  if(keyDown('space')){
-    warrior1.velocityY=-5;
-    warrior.body.velocity.y=-5
-    console.log(warrior)
+  if(gameState===1){
+    spawnVirus();
+    if(keyDown('space')){
+      warrior1.velocityY=-5;
+      warrior.body.velocity.y=-5
+      console.log(warrior)
+    }
+    
+    if(injectionGroup.isTouching(virusGroup)){
+      virusGroup.destroyEach();
+      injectionGroup.destroyEach();
+    }
+    if(warrior1.isTouching(virusGroup)){
+      gameState =0;
+    }
+    //warrior1.velocityY+=0.5;
+    //warrior.body.velocity.y +=0.5
+    warrior1.x=warrior.body.position.x
+    warrior1.y=warrior.body.position.y
+    helicoperSprite.x=heli.body.position.x
+    helicoperSprite.y=heli.body.position.y
   }
-  if(injectionGroup.isTouching(virusGroup)){
-    virusGroup.destroyEach();
-    injectionGroup.destroyEach();
-  }
-  if(warrior1.isTouching(virusGroup)){
+  else if(gameState===0){
     virusGroup.setVelocityXEach(0);
+
   }
-  warrior1.velocityY+=0.5;
-  warrior.body.velocity.y +=0.5
-  warrior1.x=warrior.body.position.x
-  warrior1.y=warrior.body.position.y
-  helicoperSprite.x=heli.body.position.x
-  helicoperSprite.y=heli.body.position.y
   warrior.display()
+  warrior1.debug=true
   heli.display()
   ground.display()
   drawSprites();
 }
 
 function keyPressed(){
-if(keyCode==39){
-  warrior1.x += 2;
-  warrior.body.position.x += 2;
-}
-if(keyCode== 69){
-   rope.bodyB=null
-}
-if(keyCode== 68){
-  rope.bodyB=warrior.body
-}
-if(keyCode== 73){
-  spawnInjection();
-}
+  if(keyCode==39){
+    warrior1.x += 2;
+    warrior.body.position.x += 2;
+  }
+  if(keyCode==38){
+    warrior1.y += -2;
+    warrior.body.position.y += -2;
+  }
+  if(keyCode==37){
+    warrior1.x += -2;
+    warrior.body.position.x += -2;
+  }
+  if(keyCode==40){
+    warrior1.y += 10;
+    warrior.body.position.y += 10;
+  }
+  if(keyCode== 69){
+     rope.bodyB=null
+  }
+  if(keyCode== 68){
+    rope.bodyB=warrior.body
+  }
+  if(keyCode== 73){
+    spawnInjection();
+  }
 
 }
 function spawnVirus() {
@@ -152,6 +177,7 @@ function spawnVirus() {
     virus.depth = warrior1.depth;
     warrior.depth = warrior1.depth + 1;
     virusGroup.add(virus);
+    virus.debug=true
   }
 }
 
