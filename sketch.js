@@ -4,9 +4,6 @@ const Bodies = Matter.Bodies;
 const Body = Matter.Body;
 const Render = Matter.Render;
 const Constraint = Matter.Constraint;
-var msg = "swipe";
-var connected = true;
-
 
 function preload(){
   injecttionImg=loadImage("injection.png")
@@ -50,21 +47,6 @@ function setup() {
   bgSprite.scale = 1.7;
   bgSprite.frameDelay = 10;
 
-  // var options = {
-  //   preventDefault: true
-  // };
-  
-  // // document.body registers gestures anywhere on the page
-  // var hammer = new Hammer(document.body, options);
-  // hammer.get('swipe').set({
-  //   direction: Hammer.DIRECTION_ALL
-  // });
-
-  // hammer.on("swipe", swiped);
-  
-
- 
-
   ground=createSprite(windowWidth/2,windowHeight,windowWidth,20)
   ground.visible=false
   ground = new Ground(windowWidth/2,windowHeight,windowWidth,20)
@@ -97,23 +79,17 @@ function draw() {
   background(255,255,255);  
   Engine.update(engine)
   spawnVirus();
-  //if(keyDown('space')){
-    //warrior1.velocityY=-5;
-    //warrior.body.velocity.y=-5
-    //console.log(warrior)
-  //}
+  if(keyDown('space')){
+    warrior1.velocityY=-5;
+    warrior.body.velocity.y=-5
+    console.log(warrior)
+  }
   if(injectionGroup.isTouching(virusGroup)){
     virusGroup.destroyEach();
     injectionGroup.destroyEach();
   }
   if(warrior1.isTouching(virusGroup)){
     virusGroup.setVelocityXEach(0);
-  }
-  if(connected){
-    rope.bodyB=warrior.body
-  }
-  else{
-    rope.bodyB=null
   }
   warrior1.velocityY+=0.5;
   warrior.body.velocity.y +=0.5
@@ -132,26 +108,13 @@ if(keyCode==39){
   warrior1.x += 2;
   warrior.body.position.x += 2;
 }
-if(keyCode==38){
-  warrior1.y += -2;
-  warrior.body.position.y += -2;
-}
-if(keyCode==37){
-  warrior1.x += -2;
-  warrior.body.position.x += -2;
-}
-if(keyCode==40){
-  warrior1.y += 2;
-  warrior.body.position.y += 2;
-}
-if(keyCode==69){
-  console.log('test')
+if(keyCode== 69){
    rope.bodyB=null
 }
-if(keyCode==68){
+if(keyCode== 68){
   rope.bodyB=warrior.body
 }
-if(keyCode==73){
+if(keyCode== 73){
   spawnInjection();
 }
 
@@ -184,7 +147,6 @@ function spawnVirus() {
       virus.x=0;
       virus.velocityX = 3
     }
-    virus.debug=true;
     //virus.velocityY= -Math.round(random(-5,2));
     virus.lifetime = displayWidth;
     virus.depth = warrior1.depth;
@@ -204,8 +166,6 @@ function spawnInjection() {
      warrior.depth = warrior1.depth + 1;
      injectionGroup.add(virus);
      virus.velocityX=3;
-     virus.debug=true
      virus.velocityY=4;
    
  }
-
