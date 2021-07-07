@@ -50,17 +50,17 @@ function setup() {
   bgSprite.scale = 1.7;
   bgSprite.frameDelay = 10;
 
-  var options = {
-    preventDefault: true
-  };
+  // var options = {
+  //   preventDefault: true
+  // };
   
-  // document.body registers gestures anywhere on the page
-  var hammer = new Hammer(document.body, options);
-  hammer.get('swipe').set({
-    direction: Hammer.DIRECTION_ALL
-  });
+  // // document.body registers gestures anywhere on the page
+  // var hammer = new Hammer(document.body, options);
+  // hammer.get('swipe').set({
+  //   direction: Hammer.DIRECTION_ALL
+  // });
 
-  hammer.on("swipe", swiped);
+  // hammer.on("swipe", swiped);
   
 
  
@@ -144,13 +144,14 @@ if(keyCode==40){
   warrior1.y += 2;
   warrior.body.position.y += 2;
 }
-if(keyCode== 69){
+if(keyCode==69){
+  console.log('test')
    rope.bodyB=null
 }
-if(keyCode== 68){
+if(keyCode==68){
   rope.bodyB=warrior.body
 }
-if(keyCode== 73){
+if(keyCode==73){
   spawnInjection();
 }
 
@@ -203,31 +204,8 @@ function spawnInjection() {
      warrior.depth = warrior1.depth + 1;
      injectionGroup.add(virus);
      virus.velocityX=3;
-     injection.debug=true
+     virus.debug=true
      virus.velocityY=4;
    
  }
 
-
-function swiped(event) {
-  console.log(event);
-  if (event.direction == 4) {
-   console.log("you swiped right");
-   warrior1.x += 2;
-  warrior.body.position.x += 2;
-  } else if (event.direction == 8) {
-   console.log("you swiped up");
-   warrior1.y += -2;
-   warrior.body.position.y += -2;
-  } else if (event.direction == 16) {
-   console.log("you swiped down");
-  connected = !connected
-  } else if (event.direction == 2) {
-   console.log("you swiped left");
-   warrior1.x += -2;
-  warrior.body.position.x += -2;
-  }
-}
-function tapped(){
-  spawnInjection();
-}
