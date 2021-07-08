@@ -35,7 +35,9 @@ function preload(){
     'https://la-wit.github.io/build-an-infinite-runner/build/images/sprites/adventureMan/run08.png',     
     'https://la-wit.github.io/build-an-infinite-runner/build/images/sprites/adventureMan/run09.png'    
   );
-  
+  medicine = loadImage('medicine.png');
+  over=loadImage('over.png');
+  win=loadImage('won.png');
 }
 
 function setup() {
@@ -45,10 +47,14 @@ function setup() {
 	world = engine.world; 
   virusGroup = new Group();
   injectionGroup = new Group();
+  
   bgSprite=createSprite(windowWidth/2,windowHeight/2)
   bgSprite.addAnimation("bg",bg);
   bgSprite.scale = 1.7;
   bgSprite.frameDelay = 10;
+
+  message=createSprite(windowWidth/2,windowHeight/2)
+  message.visible=false
 
   ground=createSprite(windowWidth/2,windowHeight,windowWidth,20)
   ground.visible=false
@@ -69,6 +75,12 @@ function setup() {
   location1 = createSprite((windowWidth-200),windowHeight-150,100,100)
   location1.addImage(house)
   location1.scale=0.4
+
+  medicineSprite=createSprite(warrior1.x,warrior1.y,20,20)
+  medicineSprite.addImage(medicine)
+  medicineSprite.scale=0.1
+ medicineSprite.depth=1;
+  location1.depth=1;
   var options={
     bodyA:heli.body,
     bodyB:warrior.body,
@@ -86,12 +98,18 @@ function draw() {
   Engine.update(engine)
   if(gameState===1){
     spawnVirus();
+    medicineSprite.x=warrior1.x+20;
+    medicineSprite.y=warrior1.y+15;
     if(keyDown('space')){
       warrior1.velocityY=-5;
       warrior.body.velocity.y=-5
       console.log(warrior)
     }
-    
+    if(medicineSprite.isTouching(location1)){
+      medicineSprite.x=location1.x-100;
+      medicineSprite.y=location1.y+130;
+      gameState=2;
+    }
     if(injectionGroup.isTouching(virusGroup)){
       virusGroup.destroyEach();
       injectionGroup.destroyEach();
@@ -108,6 +126,14 @@ function draw() {
   }
   else if(gameState===0){
     virusGroup.setVelocityXEach(0);
+    message.visible=true;
+    message.addImage(over)
+
+  }
+  else if(gameState===2){
+    virusGroup.setVelocityXEach(0);
+    message.visible=true;
+    message.addImage(win)
 
   }
   warrior.display()
@@ -149,15 +175,15 @@ function spawnVirus() {
  rand = Math.round(random(1,5))
  rand1 = Math.round(random(1,2))
  switch(rand){
-   case 1: fc=300;
+   case 1: fc=50;
    break;
-   case 2: fc=400;
+   case 2: fc=75;
    break;
-   case 3: fc=200;
+   case 3: fc=100;
    break;
-   case 4: fc=600;
+   case 4: fc=150;
    break;
-   case 5: fc=150;
+   case 5: fc=200;
    break;
  }
   if (frameCount % fc === 0) {
@@ -167,12 +193,13 @@ function spawnVirus() {
     virus.scale = 0.25;
     if(rand1===1){
       virus.x=displayWidth;
-      virus.velocityX = -3
+      virus.velocityX = -6
     }
     else if(rand1===2){
       virus.x=0;
-      virus.velocityX = 3
+      virus.velocityX = 6
     }
+    virus.setCollider('circle',0,0,100)
     //virus.velocityY= -Math.round(random(-5,2));
     virus.lifetime = displayWidth;
     virus.depth = warrior1.depth;
