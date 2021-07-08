@@ -8,7 +8,7 @@ var gameState = 1;
 
 function preload(){
   injecttionImg=loadImage("injection.png")
-  house=loadImage('house.png')
+  //house=loadImage('house.png')
   bg=loadAnimation('bg/bg1.gif','bg/bg2.gif','bg/bg3.gif','bg/bg3.gif','bg/bg4.gif','bg/bg6.gif','bg/bg7.gif')
   virus1=loadAnimation("virus/v1.gif","virus/v3.gif","virus/v4.gif","virus/v5.gif","virus/v6.gif","virus/v7.gif","virus/v8.gif","virus/v9.gif")
   helicoper=loadAnimation("helicopter/h1.gif","helicopter/h2.gif","helicopter/h3.gif","helicopter/h4.gif","helicopter/h5.gif","helicopter/h6.gif","helicopter/h7.gif","helicopter/h8.gif")
@@ -66,8 +66,8 @@ function setup() {
   helicoperSprite.addAnimation('heli',helicoper)
   helicoperSprite.scale=2;
 
-  location = createSprite(random(200,displayWidth-200),displayHeight-200,100,100)
-  location.addImage(house)
+  //location = createSprite(random(200,displayWidth-200),displayHeight-200,100,100)
+  //location.addImage(house)
   var options={
     bodyA:heli.body,
     bodyB:warrior.body,
@@ -85,11 +85,11 @@ function draw() {
   Engine.update(engine)
   if(gameState===1){
     spawnVirus();
-    if(keyDown('space')){
-      warrior1.velocityY=-5;
-      warrior.body.velocity.y=-5
-      console.log(warrior)
-    }
+    //if(keyDown('space')){
+    // warrior1.velocityY=-5;
+    // warrior.body.velocity.y=-5
+    // console.log(warrior)
+    //}
     
     if(injectionGroup.isTouching(virusGroup)){
       virusGroup.destroyEach();
@@ -113,6 +113,7 @@ function draw() {
   warrior1.debug=true
   heli.display()
   ground.display()
+ 
   drawSprites();
 }
 
