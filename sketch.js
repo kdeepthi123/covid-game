@@ -66,8 +66,9 @@ function setup() {
   helicoperSprite.addAnimation('heli',helicoper)
   helicoperSprite.scale=2;
 
-  location = createSprite(random(200,displayWidth-200),displayHeight-200,100,100)
-  location.addImage(house)
+  location1 = createSprite((windowWidth-200),windowHeight-150,100,100)
+  location1.addImage(house)
+  location1.scale=0.4
   var options={
     bodyA:heli.body,
     bodyB:warrior.body,
